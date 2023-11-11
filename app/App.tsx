@@ -1,5 +1,4 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { supabase } from "./utils/supabase";
 import React from "react";
@@ -21,19 +20,6 @@ export default function App() {
   const [authResponse, setAuthResponse] = React.useState<
     AuthTokenResponse | null
   >(null);
-
-  useEffect(() => {
-    supabase.auth.signInWithPassword({
-      email: "contato@manacespereira.com.br",
-      password: "mana",
-    }).then((response) => {
-      console.log(response);
-
-      supabase.from("recommendation").select("*").then((res) => {
-        console.log("RES: ", res);
-      });
-    });
-  }, []);
 
   return (
     <View style={styles.container}>
