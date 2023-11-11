@@ -43,8 +43,8 @@ CREATE TABLE IF NOT EXISTS "public"."recommendation" (
     "sender_id" "uuid" NOT NULL,
     "receiver_id" "uuid" NOT NULL,
     "item_id" "text" NOT NULL,
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    primary key ("sender_id", "receiver_id", "item_id")
 );
 ALTER TABLE "public"."recommendation" OWNER TO "postgres";
 ALTER TABLE ONLY "public"."item"
