@@ -61,7 +61,7 @@ export default function App() {
 
   return (
     <Box h="100%" justifyContent="center" alignItems="center">
-      <VStack space="lg" reversed={false} width="100%" paddingHorizontal={30}>
+      <VStack space="md" width="100%" paddingHorizontal={30}>
         <Text color="green" fontSize={20} textAlign="center">
           Welcome to Listo!
         </Text>
@@ -76,6 +76,7 @@ export default function App() {
               placeholder="Email"
               defaultValue={userEmail}
               onChangeText={setUserEmail}
+              autoCapitalize="none"
             />
           </Input>
         </FormControl>
@@ -86,7 +87,7 @@ export default function App() {
           </FormControlLabel>
           <Input>
             <InputField
-              type="text"
+              type="password"
               placeholder="Password"
               defaultValue={userPassword}
               onChangeText={setUserPassword}
@@ -107,9 +108,9 @@ export default function App() {
         </Button>
 
         {!!authResponse && (
-          <Alert mx="$2.5" action="error" variant="accent">
-            <AlertIcon as={InfoIcon} mr="$3" />
-            <AlertText>
+          <Alert action={!!authResponse.error ? 'error' : 'success'} variant="accent">
+            <AlertIcon as={InfoIcon} />
+            <AlertText ml={5}>
               {authResponse == null
                 ? ""
                 : authResponse.error == null
@@ -118,7 +119,6 @@ export default function App() {
             </AlertText>
           </Alert>
         )}
-        <StatusBar style="auto" />
       </VStack>
     </Box>
   );
