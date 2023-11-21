@@ -1,12 +1,12 @@
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { supabase } from "./utils/supabase";
-import React from "react";
 import { AuthTokenResponse } from "@supabase/supabase-js";
 
 async function signIn(
   email: string,
-  password: string,
+  password: string
 ): Promise<AuthTokenResponse> {
   return await supabase.auth.signInWithPassword({
     email,
@@ -15,11 +15,11 @@ async function signIn(
 }
 
 export default function App() {
-  const [userEmail, onChangeEmail] = React.useState("");
-  const [userPassword, onChangePassword] = React.useState("");
-  const [authResponse, setAuthResponse] = React.useState<
-    AuthTokenResponse | null
-  >(null);
+  const [userEmail, onChangeEmail] = useState("");
+  const [userPassword, onChangePassword] = useState("");
+  const [authResponse, setAuthResponse] = useState<AuthTokenResponse | null>(
+    null
+  );
 
   return (
     <View style={styles.container}>
@@ -27,7 +27,7 @@ export default function App() {
       <TextInput
         style={styles.input}
         onChangeText={onChangeEmail}
-        placeholder="email"
+        placeholder="Email"
         value={userEmail}
       />
       <TextInput
@@ -35,19 +35,20 @@ export default function App() {
         style={styles.input}
         onChangeText={onChangePassword}
         value={userPassword}
-        placeholder="password"
+        placeholder="Password"
       />
       <Button
         title="Sign In"
         onPress={async () =>
-          setAuthResponse(await (signIn(userEmail, userPassword)))}
+          setAuthResponse(await signIn(userEmail, userPassword))
+        }
       />
       <Text>
         {authResponse == null
           ? ""
-          : (authResponse.error == null
-            ? "Success"
-            : authResponse.error.message)}
+          : authResponse.error == null
+          ? "Success"
+          : authResponse.error.message}
       </Text>
       <StatusBar style="auto" />
     </View>
@@ -60,11 +61,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 30,
   },
   input: {
     height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    width: "100%",
+    borderRadius: 10,
   },
 });
