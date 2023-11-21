@@ -24,6 +24,7 @@ import {
   InfoIcon,
   VStack,
   PlayIcon,
+  Spinner,
 } from "@gluestack-ui/themed";
 import { supabase } from "./utils/supabase";
 import { AuthTokenResponse } from "@supabase/supabase-js";
@@ -39,11 +40,24 @@ async function signIn(
 }
 
 export default function App() {
-  const [userEmail, onChangeEmail] = useState("");
-  const [userPassword, onChangePassword] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [authResponse, setAuthResponse] = useState<AuthTokenResponse | null>(
     null
   );
+
+  async function handleSignIn() {
+    try {
+      setLoading(true);
+      const response = await signIn(userEmail, userPassword);
+      setAuthResponse(response);
+    } catch (error) {
+      setAuthResponse(error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <Box h="100%" justifyContent="center" alignItems="center">
@@ -52,7 +66,7 @@ export default function App() {
           Welcome to Listo!
         </Text>
 
-        <FormControl isRequired>
+        <FormControl isRequired isDisabled={loading}>
           <FormControlLabel mb="$1">
             <FormControlLabelText>Email</FormControlLabelText>
           </FormControlLabel>
@@ -61,12 +75,12 @@ export default function App() {
               type="text"
               placeholder="Email"
               defaultValue={userEmail}
-              onChangeText={onChangeEmail}
+              onChangeText={setUserEmail}
             />
           </Input>
         </FormControl>
 
-        <FormControl isRequired>
+        <FormControl isRequired isDisabled={loading}>
           <FormControlLabel mb="$1">
             <FormControlLabelText>Password</FormControlLabelText>
           </FormControlLabel>
@@ -75,7 +89,7 @@ export default function App() {
               type="text"
               placeholder="Password"
               defaultValue={userPassword}
-              onChangeText={onChangePassword}
+              onChangeText={setUserPassword}
             />
           </Input>
         </FormControl>
@@ -84,11 +98,12 @@ export default function App() {
           size="lg"
           variant="solid"
           action="primary"
-          isDisabled={false}
+          isDisabled={loading}
           isFocusVisible={false}
-          onPress={async () => { setAuthResponse(await signIn(userEmail, userPassword)) }}
+          onPress={handleSignIn}
         >
-          <ButtonText>Sign In!</ButtonText>
+          <ButtonText>Sign In! </ButtonText>
+          {loading && <Spinner color="yellow" size="small" />}
         </Button>
 
         {!!authResponse && (
