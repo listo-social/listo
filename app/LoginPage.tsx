@@ -60,8 +60,8 @@ export default function App() {
   }
 
   return (
-    <Box h="100%" justifyContent="center" alignItems="center">
-      <VStack space="md" width="100%" paddingHorizontal={30}>
+    <Box h="100%" w="100%" justifyContent="center" alignItems="center">
+      <VStack space="md" width="50%" paddingHorizontal={30}>
         <Text color="green" fontSize={20} textAlign="center">
           Welcome to Listo!
         </Text>
